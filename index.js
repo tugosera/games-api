@@ -49,7 +49,7 @@ function getBaseUrl(req) {
         ? 'https' : 'http' + `://${req.headers.host}`
 }
 
-app.delete('/games/:id', (req,res) => {
+app.delete('/games/delete/:id', (req,res) => {
     if (typeof games[req.params.id -1] === 'undefined') {
         return res.status(404).send({error: "Game not found"})
     }
