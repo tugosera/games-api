@@ -14,9 +14,6 @@ info:
 paths:
     /games:
         get:
-            requestBody:
-                description: A new game to be created
-                required: true
             tags:
                 - games
             responses:
@@ -36,6 +33,7 @@ paths:
                 '201':
                     content:
                         new-game: {}
+                    description: description
                 '400':
                     content:
                         application/json:
@@ -50,10 +48,11 @@ paths:
             description: |
                 return a list of all games API
         post:
-            requestBody: {}
             tags:
                 - new-game
-            responses: {}
+            responses:
+                '200':
+                    description: description
             summary: Creates a game
             description: Creates a new game
     '/games/{id}':
@@ -69,37 +68,35 @@ paths:
                                 items:
                                     type: string
                             examples:
-                                full details of a given game:
+                                Full details of a game:
                                     value: |-
                                         {id:1, name: "Wicher 3", price:29.99},
-                                        {id:2, name: "Cyberpunc 2077", price:59.99}
-                    description: returns full details of a given game
+                                        {id:2, name: "Cyberpunk 2077", price:59.99}
+                    description: returns full details of a given id game
                 '404':
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    type: string
+                                $ref: '#/components/schemas/error'
                             examples:
                                 Game /w+ was not found:
-                                    value:
-                                        - Game \w+ was not found in game array.
-                    description: Game was not found in games array
+                                    value: |-
+                                        {
+                                            "error": "Game \w+ was not found in game array."
+                                        }
+                    description: Game /w+ was not found
             operationId: id
-            summary: get full details of a game
-            description: return full details of a given game
+            description: return full details of a given id game
         delete:
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/delete-game'
+            tags:
+                - delete
             responses:
-                '204': {}
-                '404': {}
-            summary: deliting the game
-            description: deleteing the game
+                '204':
+                    description: No Content
+                '404':
+                    description: Not Found
+            summary: delete game
+            description: deleteing game from list
 components:
     schemas:
         error:
@@ -128,6 +125,17 @@ components:
                 name: Tetris
                 price: 0.99
         delete-game:
+            description: ''
+            required:
+                - id
+            type: object
+            properties:
+                id:
+                    description: ''
+                    type: string
+            example:
+                id: 1
+        CloneOfdelete-game:
             description: ''
             required:
                 - id

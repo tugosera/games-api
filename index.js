@@ -1,8 +1,11 @@
-const app = require('express')()
+const express = require('express')   // добавь эту строку
+const app = express()                // создаём приложение из express
 const port = 3488
 const swaggerUi = require('swagger-ui-express')
 const yamljs = require('yamljs')
 const swaggerDocument = yamljs.load('./docs/swagger.yaml')
+
+app.use(express.json())              // теперь эта строка работает
 
 const games = [
     {id:1, name: "Wicher 3", price:29.99},
@@ -26,7 +29,7 @@ app.post('/games', (req,res) => {
         return res.status(400).send({ error: 'one or all params are missing'})
     }
     let game = {
-        id: games.lenght + 1,
+        id: games.length + 1,
         price: req.body.price,
         name: req.body.name
     }
@@ -49,7 +52,7 @@ function getBaseUrl(req) {
         ? 'https' : 'http' + `://${req.headers.host}`
 }
 
-app.delete('/games/delete/:id', (req,res) => {
+app.delete('/games/:id', (req,res) => {
     if (typeof games[req.params.id -1] === 'undefined') {
         return res.status(404).send({error: "Game not found"})
     }
