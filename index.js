@@ -1,11 +1,13 @@
-const express = require('express')   // добавь эту строку
-const app = express()                // создаём приложение из express
+const express = require('express')   
+const app = express()    
+const cors = require('cors')            
 const port = 3488
 const swaggerUi = require('swagger-ui-express')
 const yamljs = require('yamljs')
 const swaggerDocument = yamljs.load('./docs/swagger.yaml')
 
-app.use(express.json())              // теперь эта строка работает
+app.use(cors())
+app.use(express.json())
 
 const games = [
     {id:1, name: "Wicher 3", price:29.99},
